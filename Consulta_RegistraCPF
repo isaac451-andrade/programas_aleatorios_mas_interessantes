@@ -1,0 +1,62 @@
+from time import sleep
+
+def inserir(*dado):
+    for d in dado:
+        pessoa.append(d)
+
+
+while True:
+    pessoa = []
+    print('<SIMULADOR DE REGISTRO E CONSULTA DE CPF>')
+    sleep(0.5)
+    print('               Bem Vindo!')
+    sleep(0.5)
+    opcao = input('''
+[ 1 ] Consulta CPF      [ 2 ] Registra CPF
+Escolha: ''')
+    while opcao not in '12':
+        opcao = input('VALOR INVÁLIDO! Digite [ 1 ] ou [ 2 ]: ')
+    if opcao == '2':
+        print()
+        cpf = input('Digite um número de CPF válido: ').lower()
+        while len(cpf) != 11 or not cpf.isnumeric():
+            cpf = input('CPF INVÁLIDO! Digite um CPF com 11 NÚMEROS SEM PONTO E HÍFEN: ')
+        print('--'*20)
+        nome = input('Nome completo da pessoa atrelada a este CPF: ')
+        print('--'*20)
+        idade = int(input('Idade do indivíduo: '))
+        print('--'*20)
+        estado = input('Estado atual de sua moradia: ')
+        print('--'*20)
+        inserir(cpf, nome.title(), str(idade)+' anos', estado.capitalize())
+        with open('dados.txt', 'a') as file:
+            for dado in pessoa:
+                file.write(f'{dado}\n')  
+        print('Pessoa Física registrada com sucesso!')
+        sleep(0.8)         
+    elif opcao == '1':
+        print()
+        cpf = input('Digite um número de CPF válido: ').lower()
+        while len(cpf) != 11 or not cpf.isnumeric():
+            cpf = input('CPF INVÁLIDO! Digite um CPF com 11 NÚMEROS SEM PONTO E HÍFEN: ')          
+        with open('dados.txt', 'r') as file:
+            dados = file.readlines()
+            if cpf +'\n' not in dados:
+                print('Esse CPF NÃO EXISTE!')
+                sleep(0.6)
+                break
+            for index, linha in enumerate(dados):
+                if linha == cpf + '\n':
+                    print('--'*20)
+                    print('Dados do CPF fornecido:')
+                    print()
+                    for info in range(index, index+4):
+                        print(dados[info])   
+                    print('--'*20)
+                    break
+    opcao = input('Quer continuar? [S/N]: ').upper()
+    while opcao not in 'SN':
+        opcao = input('Valor inválido! Escolha [S/N]: ').upper()
+    if opcao == 'N':
+        break                    
+             
